@@ -51,21 +51,26 @@ export function GitHubContributionCalendar({
   const availableYears = Array.from({ length: 6 }, (_, i) => currentYear - i);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 sm:px-8">
+      {/* Title and Year Selector */}
       <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
-        <h2 className="font-semibold text-2xl">
-          Contributions for <span className="text-primary">{selectedYear}</span>
+        <h2 className="font-semibold text-primary text-2xl">
+          GitHub Contributions for{" "}
+          <span className="text-accent">{username}</span>
         </h2>
-        <YearSelector
-          years={availableYears}
-          selectedYear={selectedYear}
-          onChange={setSelectedYear}
-        />
+        <div className="mt-2 sm:mt-0">
+          <YearSelector
+            years={availableYears}
+            selectedYear={selectedYear}
+            onChange={setSelectedYear}
+          />
+        </div>
       </div>
 
+      {/* Display Contributions or Loading/Error State */}
       {isLoading ? (
-        <div className="space-y-2">
-          <Skeleton className="rounded-lg w-full h-[120px]" />
+        <div className="space-y-4">
+          <Skeleton className="rounded-lg w-full h-[150px]" />
           <div className="gap-1 grid grid-cols-7">
             {Array.from({ length: 7 }).map((_, i) => (
               <Skeleton key={i} className="w-full h-4" />
@@ -73,18 +78,30 @@ export function GitHubContributionCalendar({
           </div>
         </div>
       ) : error ? (
-        <div className="bg-destructive/10 p-6 rounded-lg text-destructive">
-          <p>Error: {error}</p>
+        <div className="bg-red-50 p-6 border border-red-500 rounded-lg text-red-700">
+          <p className="font-semibold text-lg">Error: {error}</p>
           <p className="mt-2 text-sm">
-            Please check your GitHub token and try again.
+            Please check your GitHub token and try again. You can also refresh
+            the page to retry.
           </p>
+          <button
+            onClick={() => setIsLoading(true)}
+            className="bg-red-500 hover:bg-red-600 mt-4 px-4 py-2 rounded-lg text-white"
+          >
+            Retry
+          </button>
         </div>
       ) : (
         <CalendarHeatmap data={contributionData} year={selectedYear} />
       )}
 
-      <div className="text-muted-foreground text-sm">
-        <p>Showing both public and private contributions for {username}</p>
+      {/* Info about contributions */}
+      <div className="mt-4 text-muted-foreground text-sm">
+        <p>
+          Contributions include both public and private commits, pull requests,
+          issues, and comments. The heatmap visually represents your activity
+          across the year.
+        </p>
       </div>
     </div>
   );
