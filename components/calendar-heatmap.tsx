@@ -106,7 +106,7 @@ export function CalendarHeatmap({
   return (
     <div className="relative flex flex-col gap-3 md:gap-6 min-w-full">
       {/* Year and Theme Selectors */}
-      <div className="flex flex-wrap justify-end items-center gap-4 px-1">
+      <div className="flex flex-wrap justify-evenly sm:justify-end items-center gap-4 px-1">
         <Select
           className="w-[120px]"
           label="Year"
@@ -119,21 +119,19 @@ export function CalendarHeatmap({
             <SelectItem key={year}>{year}</SelectItem>
           ))}
         </Select>
-        <div className="flex w-full sm:w-[200px]">
-          <Select
-            className="w-full"
-            label="Color Theme"
-            labelPlacement="outside"
-            placeholder="Select Theme"
-            variant="bordered"
-            selectedKeys={colorScheme}
-            onSelectionChange={(keys) => setColorScheme(keys as Set<string>)}
-          >
-            {Object.keys(colorThemes).map((theme) => (
-              <SelectItem key={theme}>{theme}</SelectItem>
-            ))}
-          </Select>
-        </div>
+        <Select
+          className="w-[120px]"
+          label="Color Theme"
+          labelPlacement="outside"
+          placeholder="Select Theme"
+          variant="bordered"
+          selectedKeys={colorScheme}
+          onSelectionChange={(keys) => setColorScheme(keys as Set<string>)}
+        >
+          {Object.keys(colorThemes).map((theme) => (
+            <SelectItem key={theme}>{theme}</SelectItem>
+          ))}
+        </Select>
       </div>
 
       {/* Month Labels */}
