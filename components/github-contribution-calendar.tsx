@@ -56,7 +56,7 @@ export function GitHubContributionCalendar({
     <section className="py-16 md:py-24">
       <div className="flex flex-col gap-4 px-4 sm:px-8 md:px-6 container">
         {/* Title and Year Selector */}
-        <div className="flex sm:flex-row flex-col justify-center items-start sm:items-center gap-4">
+        <div className="flex sm:flex-row flex-col justify-center items-center gap-4">
           <motion.h2
             className="font-bold text-2xl md:text-3xl text-center leading-9 md:leading-10"
             initial={{ opacity: 0, y: 20 }}
