@@ -137,62 +137,64 @@ export function CalendarHeatmap({
       </div>
 
       {/* Month Labels */}
-      <div className="p-4 w-fit overflow-x-scroll">
-        <div className="relative flex justify-between px-10 w-auto">
-          {monthLabels.map(({ month }) => (
-            <div
-              key={month}
-              className="text-muted-foreground text-xs text-center"
-            >
-              {months[month]}
-            </div>
-          ))}
-        </div>
-
-        {/* Heatmap */}
-        <div className="flex">
-          {/* Weekday Labels */}
-          <div className="flex flex-col justify-around w-8 h-[88px] text-muted-foreground text-xs">
-            <div>Mon</div>
-            <div>Wed</div>
-            <div>Fri</div>
+      <div className="overflow-x-scroll">
+        <div className="p-4 w-fit">
+          <div className="relative flex justify-between px-10 w-auto">
+            {monthLabels.map(({ month }) => (
+              <div
+                key={month}
+                className="text-muted-foreground text-xs text-center"
+              >
+                {months[month]}
+              </div>
+            ))}
           </div>
 
-          {/* Calendar Grid */}
-          <div className="flex-1">
-            <div className="gap-1 grid grid-flow-col">
-              {data.weeks.map((week, weekIndex) => (
-                <div key={weekIndex} className="gap-1 grid grid-rows-7">
-                  {week.days.map((day, dayIndex) => (
-                    <Tooltip
-                      key={dayIndex}
-                      content={
-                        <div className="text-xs">
-                          <div className="font-medium">
-                            {new Date(day.date).toLocaleDateString("en-US", {
-                              weekday: "long",
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
+          {/* Heatmap */}
+          <div className="flex">
+            {/* Weekday Labels */}
+            <div className="flex flex-col justify-around w-8 h-[88px] text-muted-foreground text-xs">
+              <div>Mon</div>
+              <div>Wed</div>
+              <div>Fri</div>
+            </div>
+
+            {/* Calendar Grid */}
+            <div className="flex-1">
+              <div className="gap-1 grid grid-flow-col">
+                {data.weeks.map((week, weekIndex) => (
+                  <div key={weekIndex} className="gap-1 grid grid-rows-7">
+                    {week.days.map((day, dayIndex) => (
+                      <Tooltip
+                        key={dayIndex}
+                        content={
+                          <div className="text-xs">
+                            <div className="font-medium">
+                              {new Date(day.date).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </div>
+                            <div>
+                              {day.count} contribution
+                              {day.count !== 1 ? "s" : ""}
+                            </div>
                           </div>
-                          <div>
-                            {day.count} contribution
-                            {day.count !== 1 ? "s" : ""}
-                          </div>
-                        </div>
-                      }
-                    >
-                      <div
-                        className="rounded-sm hover:ring-2 hover:ring-primary/50 hover:ring-offset-1 w-3 h-3 hover:scale-125 transition-transform"
-                        style={{ backgroundColor: getColor(day.count) }}
-                        onMouseEnter={() => setHoveredDay(day)}
-                        onMouseLeave={() => setHoveredDay(null)}
-                      />
-                    </Tooltip>
-                  ))}
-                </div>
-              ))}
+                        }
+                      >
+                        <div
+                          className="rounded-sm hover:ring-2 hover:ring-primary/50 hover:ring-offset-1 w-3 h-3 hover:scale-125 transition-transform"
+                          style={{ backgroundColor: getColor(day.count) }}
+                          onMouseEnter={() => setHoveredDay(day)}
+                          onMouseLeave={() => setHoveredDay(null)}
+                        />
+                      </Tooltip>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
