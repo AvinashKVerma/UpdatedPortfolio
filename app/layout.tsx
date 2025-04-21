@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} flex justify-center`}>
+      <body className={`${inter.className}`}>
         <NextAuthProvider>
           <ThemeProvider
             attribute="class"
@@ -32,11 +32,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Providers>
-              <div className="flex flex-col max-w-[1240px] min-h-screen">
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
+              <Header />
+              {children}
+              <Footer />
             </Providers>
           </ThemeProvider>
         </NextAuthProvider>

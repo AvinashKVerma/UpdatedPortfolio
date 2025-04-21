@@ -6,10 +6,11 @@ import ExperienceSection from "@/components/sections/experience-section";
 import EducationSection from "@/components/sections/education-section";
 import ContactSection from "@/components/sections/contact-section";
 import { GitHubContributionCalendar } from "@/components/github-contribution-calendar";
+import Contact from "@/components/sections/contact-section";
 
 export default function Home() {
   return (
-    <>
+    <div className="container">
       <HeroSection />
       <AboutSection />
       <GitHubContributionCalendar username="AvinashKVerma" />
@@ -17,7 +18,7 @@ export default function Home() {
       <ProjectsSection />
       <ExperienceSection />
       <EducationSection />
-      <ContactSection />
-    </>
+      <Contact />
+    </div>
   );
 }

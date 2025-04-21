@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Card, CardContent } from "@/components/ui/card"
+import { motion } from "framer-motion";
+import { Card, CardHeader, CardBody, CardFooter, Avatar } from "@heroui/react";
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-16 md:py-24 bg-muted/50">
-      <div className="container px-4 md:px-6">
+    <section id="about" className="bg-muted/50 py-16 md:py-24">
+      <div className="px-4 md:px-6 container">
         <motion.h2
-          className="section-title"
+          className="mb-12 font-bold text-3xl sm:text-4xl text-center section-title"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -16,53 +16,96 @@ export default function AboutSection() {
         >
           About Me
         </motion.h2>
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div className="gap-8 md:gap-12 grid grid-cols-1 md:grid-cols-2">
+          {/* Professional Summary Card */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Professional Summary</h3>
-                <p className="text-muted-foreground mb-4">
-                  I am a passionate Frontend Developer with 5+ years of experience specializing in React and Next.js. I
-                  focus on building performant, accessible, and user-friendly web applications that solve real-world
-                  problems.
+            <Card className="max-w-full">
+              <CardHeader className="justify-start gap-4">
+                <Avatar
+                  isBordered
+                  radius="full"
+                  size="md"
+                  src="/profile3.png"
+                  alt="Avinash Verma"
+                />
+                <div className="flex flex-col justify-center gap-1">
+                  <h4 className="font-semibold text-default-600 text-base">
+                    Avinash K R Verma
+                  </h4>
+                  <h5 className="text-default-400 text-sm">
+                    Frontend Developer at Uinfo Technology
+                  </h5>
+                </div>
+              </CardHeader>
+              <CardBody className="px-4 pt-0 text-default-500 text-sm">
+                <p className="mb-2">
+                  With 2+ years of hands-on experience in React and Next.js, I
+                  build performant and scalable web apps that focus on user
+                  experience and maintainability.
                 </p>
-                <p className="text-muted-foreground">
-                  My expertise includes modern JavaScript frameworks, responsive design, state management, and
-                  integrating with various APIs and services. I'm committed to writing clean, maintainable code and
-                  staying up-to-date with the latest web technologies and best practices.
+                <p>
+                  I&apos;ve implemented CI/CD pipelines, serverless architecture
+                  with AWS, and optimized state management using tools like
+                  Redux and Context API.
                 </p>
-              </CardContent>
+              </CardBody>
+              <CardFooter className="px-4 pt-2 text-default-400 text-xs">
+                <span>
+                  Location: Ranchi, Jharkhand • Tech Stack: React, Next.js,
+                  Tailwind, AWS
+                </span>
+              </CardFooter>
             </Card>
           </motion.div>
+
+          {/* Personal Interests Card */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Personal Interests</h3>
-                <p className="text-muted-foreground mb-4">
-                  Beyond coding, I enjoy contributing to open-source projects and sharing knowledge through technical
-                  blog posts and community forums. I'm passionate about mentoring junior developers and participating in
-                  hackathons.
+            <Card className="max-w-full">
+              <CardHeader className="justify-start gap-4">
+                <Avatar
+                  isBordered
+                  radius="full"
+                  size="md"
+                  src="/profile3.png"
+                  alt="Avinash Verma"
+                />
+                <div className="flex flex-col justify-center gap-1">
+                  <h4 className="font-semibold text-default-600 text-base">
+                    Personal Interests
+                  </h4>
+                  <h5 className="text-default-400 text-sm">Beyond the Code</h5>
+                </div>
+              </CardHeader>
+              <CardBody className="px-4 pt-0 text-default-500 text-sm">
+                <p className="mb-2">
+                  I love mentoring juniors, exploring tools like V0.dev and
+                  ChatGPT, and experimenting with design in Figma. I&apos;ve
+                  organized robotics competitions and was the Technical
+                  Secretary of my department.
                 </p>
-                <p className="text-muted-foreground">
-                  In my free time, I enjoy hiking, photography, and exploring new technologies through side projects. I
-                  believe in continuous learning and am currently exploring advanced React patterns and serverless
-                  architectures.
+                <p>
+                  I&apos;m also passionate about building side projects, staying
+                  updated on React ecosystem trends, and continuously improving
+                  my craft.
                 </p>
-              </CardContent>
+              </CardBody>
+              <CardFooter className="px-4 pt-2 text-default-400 text-xs">
+                <span>Always learning • Team Player • Creative Thinker</span>
+              </CardFooter>
             </Card>
           </motion.div>
         </div>
       </div>
     </section>
-  )
+  );
 }

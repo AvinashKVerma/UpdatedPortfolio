@@ -1,83 +1,112 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { GraduationCap } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-const education = [
-  {
-    id: 1,
-    institution: "University of Technology",
-    degree: "Master of Computer Science",
-    field: "Software Engineering",
-    period: "2015 - 2017",
-    description: "Focused on advanced software engineering principles, distributed systems, and web technologies.",
-    achievements: ["Graduated with Distinction", "Published research paper on web performance optimization"],
-  },
-  {
-    id: 2,
-    institution: "State University",
-    degree: "Bachelor of Science",
-    field: "Computer Science",
-    period: "2011 - 2015",
-    description:
-      "Comprehensive program covering programming fundamentals, algorithms, data structures, and software development.",
-    achievements: ["Dean's List all semesters", "Led student web development club"],
-  },
-]
+export default function Education() {
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef(null);
 
-export default function EducationSection() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsInView(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the section is in view
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section id="education" className="py-16 md:py-24 bg-muted/50">
-      <div className="container px-4 md:px-6">
-        <motion.h2
-          className="section-title"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Education
-        </motion.h2>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {education.map((edu, index) => (
-            <motion.div
-              key={edu.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * index }}
-            >
-              <Card>
-                <CardHeader className="flex flex-row items-start gap-4">
-                  <div className="rounded-full p-2 bg-muted">
-                    <GraduationCap className="h-6 w-6 text-accent" />
-                  </div>
-                  <div>
-                    <CardTitle>{edu.degree}</CardTitle>
-                    <CardDescription className="text-base">{edu.field}</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="font-medium">{edu.institution}</span>
-                    <Badge variant="outline">{edu.period}</Badge>
-                  </div>
-                  <p className="text-muted-foreground mb-4">{edu.description}</p>
-                  <h4 className="font-medium mb-2">Achievements:</h4>
-                  <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
-                    {edu.achievements.map((achievement, i) => (
-                      <li key={i}>{achievement}</li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+    <section id="education" className="bg-background py-20" ref={sectionRef}>
+      <div className="px-4 md:px-6 container">
+        <div className="mx-auto mb-10 max-w-3xl text-center">
+          <h2 className="mb-4 font-bold text-3xl tracking-tighter">
+            Education
+          </h2>
+          <p className="text-muted-foreground">My academic background</p>
         </div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="space-y-6 mx-auto max-w-3xl"
+        >
+          <motion.div variants={itemVariants}>
+            <Card>
+              <CardHeader>
+                <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-2">
+                  <CardTitle>B.Tech</CardTitle>
+                  <Badge variant="outline">2018 - 2022</Badge>
+                </div>
+                <CardDescription>
+                  C.V. Raman College of Engineering
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Completed Bachelor of Technology with focus on Computer
+                  Science and Engineering.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <Card>
+              <CardHeader>
+                <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-2">
+                  <CardTitle>Intermediate</CardTitle>
+                  <Badge variant="outline">2016 - 2018</Badge>
+                </div>
+                <CardDescription>DAV Public School</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Completed intermediate education with focus on Science and
+                  Mathematics.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
-  )
+  );
 }

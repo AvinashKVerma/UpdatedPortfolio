@@ -1,60 +1,75 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useSession } from "next-auth/react"
-import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ModeToggle } from "@/components/mode-toggle"
+import { useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { data: session } = useSession()
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-      <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="font-bold text-xl">
-          Avinash K R Verma
+    <header className="top-0 z-50 sticky bg-background/95 backdrop-blur px-4 md:px-20 border-b w-full">
+      <div className="flex justify-between items-center mx-auto h-16 container">
+        <Link
+          href="/"
+          className="font-bold text-lg md:text-xl whitespace-nowrap"
+        >
+          Avinash Kumar Verma
         </Link>
 
-        {/* Mobile menu button */}
-        <div className="flex md:hidden items-center gap-4">
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center gap-4">
           <ModeToggle />
-          <Button variant="ghost" size="icon" onClick={toggleMenu} aria-label="Toggle menu">
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </Button>
         </div>
 
-        {/* Desktop navigation */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="#about" className="text-sm font-medium hover:text-accent transition-colors">
-            About
-          </Link>
-          <Link href="#skills" className="text-sm font-medium hover:text-accent transition-colors">
-            Skills
-          </Link>
-          <Link href="#projects" className="text-sm font-medium hover:text-accent transition-colors">
-            Projects
-          </Link>
-          <Link href="#experience" className="text-sm font-medium hover:text-accent transition-colors">
-            Experience
-          </Link>
-          <Link href="#education" className="text-sm font-medium hover:text-accent transition-colors">
-            Education
-          </Link>
-          <Link href="#contact" className="text-sm font-medium hover:text-accent transition-colors">
-            Contact
-          </Link>
+          {[
+            "about",
+            "skills",
+            "projects",
+            "experience",
+            "education",
+            "contact",
+          ].map((section) => (
+            <Link
+              key={section}
+              href={`#${section}`}
+              className="font-medium hover:text-accent text-sm transition-colors"
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </Link>
+          ))}
+
           {session && (
-            <Link href="/admin" className="text-sm font-medium hover:text-accent transition-colors">
+            <Link
+              href="/admin"
+              className="font-medium hover:text-accent text-sm transition-colors"
+            >
               Admin
             </Link>
           )}
+
           <ModeToggle />
           {!session ? (
             <Link href="/api/auth/signin">
@@ -72,77 +87,63 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden border-t">
-          <nav className="flex flex-col p-4 space-y-3 bg-background">
-            <Link
-              href="#about"
-              className="text-sm font-medium p-2 hover:bg-accent/10 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </Link>
-            <Link
-              href="#skills"
-              className="text-sm font-medium p-2 hover:bg-accent/10 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Skills
-            </Link>
-            <Link
-              href="#projects"
-              className="text-sm font-medium p-2 hover:bg-accent/10 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Projects
-            </Link>
-            <Link
-              href="#experience"
-              className="text-sm font-medium p-2 hover:bg-accent/10 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Experience
-            </Link>
-            <Link
-              href="#education"
-              className="text-sm font-medium p-2 hover:bg-accent/10 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Education
-            </Link>
-            <Link
-              href="#contact"
-              className="text-sm font-medium p-2 hover:bg-accent/10 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contact
-            </Link>
+        <div className="md:hidden top-16 right-0 left-0 z-40 absolute bg-background shadow-md border-t transition-all duration-200">
+          <nav className="flex flex-col space-y-2 p-4">
+            {[
+              "about",
+              "skills",
+              "projects",
+              "experience",
+              "education",
+              "contact",
+            ].map((section) => (
+              <Link
+                key={section}
+                href={`#${section}`}
+                className="hover:bg-accent/10 p-2 rounded-md font-medium text-sm"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </Link>
+            ))}
+
             {session && (
               <Link
                 href="/admin"
-                className="text-sm font-medium p-2 hover:bg-accent/10 rounded-md"
+                className="hover:bg-accent/10 p-2 rounded-md font-medium text-sm"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Admin
               </Link>
             )}
-            {!session ? (
-              <Link href="/api/auth/signin" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full">
-                  Sign In
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/api/auth/signout" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full">
-                  Sign Out
-                </Button>
-              </Link>
-            )}
+
+            <div className="flex justify-between items-center mt-2">
+              <ModeToggle />
+              {!session ? (
+                <Link
+                  href="/api/auth/signin"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Button variant="outline" size="sm" className="mt-2 w-full">
+                    Sign In
+                  </Button>
+                </Link>
+              ) : (
+                <Link
+                  href="/api/auth/signout"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Button variant="outline" size="sm" className="mt-2 w-full">
+                    Sign Out
+                  </Button>
+                </Link>
+              )}
+            </div>
           </nav>
         </div>
       )}
     </header>
-  )
+  );
 }
