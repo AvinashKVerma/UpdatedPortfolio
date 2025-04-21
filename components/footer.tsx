@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { FaLinkedinIn } from "react-icons/fa";
+import { FiGithub } from "react-icons/fi";
+import { CiMail } from "react-icons/ci";
 
 export default function Footer() {
   return (
@@ -10,23 +12,23 @@ export default function Footer() {
         </p>
         <div className="flex items-center gap-4">
           <Link
-            href="https://github.com/yourusername"
+            href="https://github.com/AvinashKVerma"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Github className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
+            <FiGithub className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
             <span className="sr-only">GitHub</span>
           </Link>
           <Link
-            href="https://linkedin.com/in/yourusername"
+            href="https://www.linkedin.com/in/avinashkverma/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Linkedin className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
+            <FaLinkedinIn className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
             <span className="sr-only">LinkedIn</span>
           </Link>
-          <Link href="mailto:avinashverma078@gmail.com">
-            <Mail className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
+          <Link target="_blank" href="mailto:avinashverma078@gmail.com">
+            <CiMail className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
             <span className="sr-only">Email</span>
           </Link>
         </div>

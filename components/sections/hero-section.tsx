@@ -56,7 +56,8 @@ export default function HeroSection() {
                 <span className="sr-only">LinkedIn</span>
               </Link>
               <Link
-                href="avinashverma078@gmail.com"
+                target="_blank"
+                href="mailto:avinashverma078@gmail.com"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <CiMail className="w-5 h-5" />
