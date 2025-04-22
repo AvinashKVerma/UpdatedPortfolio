@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Menu, X } from "lucide-react";
@@ -9,11 +9,53 @@ import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { data: session } = useSession();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const navItems = [
+    { id: "about", label: "About" },
+    { id: "github-contributions", label: "GitHub Contributions" },
+    { id: "skills", label: "Skills" },
+    { id: "projects", label: "Projects" },
+    { id: "experience", label: "Experience" },
+    { id: "education", label: "Education" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    navItems.forEach(({ id }) => {
+      const element = document.getElementById(id);
+      if (!element) return;
+
+      console.log(element);
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveSection(id);
+
+            const newUrl = `#${id}`;
+            if (window.location.hash !== newUrl) {
+              history.replaceState(null, "", newUrl);
+            }
+          }
+        },
+        { threshold: 0.5 }
+      );
+
+      observer.observe(element);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, [navItems]);
 
   return (
     <header className="top-0 z-50 sticky bg-background/95 backdrop-blur px-4 md:px-20 border-b w-full">
@@ -44,22 +86,24 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          {[
-            "about",
-            "skills",
-            "projects",
-            "experience",
-            "education",
-            "contact",
-          ].map((section) => (
-            <Link
-              key={section}
-              href={`#${section}`}
-              className="font-medium hover:text-accent text-sm transition-colors"
-            >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </Link>
-          ))}
+          {navItems.map(
+            ({ id, label }) => (
+              console.log(activeSection, id, activeSection === id),
+              (
+                <Link
+                  key={id}
+                  href={`#${id}`}
+                  className={`text-sm transition-colors ${
+                    activeSection === id
+                      ? "text-red-500 font-bold"
+                      : "hover:text-accent font-medium"
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            )
+          )}
 
           {session && (
             <Link
@@ -91,21 +135,18 @@ export default function Header() {
       {isMenuOpen && (
         <div className="md:hidden top-16 right-0 left-0 z-40 absolute bg-background shadow-md border-t transition-all duration-200">
           <nav className="flex flex-col space-y-2 p-4">
-            {[
-              "about",
-              "skills",
-              "projects",
-              "experience",
-              "education",
-              "contact",
-            ].map((section) => (
+            {navItems.map(({ id, label }) => (
               <Link
-                key={section}
-                href={`#${section}`}
-                className="hover:bg-accent/10 p-2 rounded-md font-medium text-sm"
+                key={id}
+                href={`#${id}`}
+                className={`p-2 rounded-md font-medium text-sm ${
+                  activeSection === id
+                    ? "bg-accent/20 text-primary font-bold"
+                    : "hover:bg-accent/10"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
+                {label}
               </Link>
             ))}
 

@@ -53,7 +53,7 @@ export function GitHubContributionCalendar({
   }, [username, selectedYear]);
 
   return (
-    <section className="py-16 md:py-24">
+    <section id="github-contributions" className="py-16 md:py-24">
       <div className="flex flex-col gap-4 px-4 sm:px-8 md:px-6 container">
         {/* Title and Year Selector */}
         <div className="flex sm:flex-row flex-col justify-center items-center gap-4">
