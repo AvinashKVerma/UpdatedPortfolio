@@ -16,24 +16,20 @@ export function ModeToggle() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button
-          variant="light"
-          aria-label="Toggle theme"
-          className="relative flex items-center gap-2"
-        >
+        <Button variant="light" aria-label="Toggle theme" className="relative">
           <FiSun className="dark:hidden w-5 h-5" />
           <FiMoon className="hidden dark:block w-5 h-5" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Theme Switcher">
-        <DropdownItem key="light" onClick={() => setTheme("light")}>
+        <DropdownItem key="light" onPress={() => setTheme("light")}>
           Light
         </DropdownItem>
-        <DropdownItem key="dark" onClick={() => setTheme("dark")}>
+        <DropdownItem key="dark" onPress={() => setTheme("dark")}>
           Dark
         </DropdownItem>
-        <DropdownItem key="system" onClick={() => setTheme("system")}>
+        <DropdownItem key="system" onPress={() => setTheme("system")}>
           System
         </DropdownItem>
       </DropdownMenu>

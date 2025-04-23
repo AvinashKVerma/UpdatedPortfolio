@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { FiMenu, FiX } from "react-icons/fi"; // ✅ React Icons
+import { FiMenu, FiX } from "react-icons/fi";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@heroui/react";
 
@@ -13,7 +13,7 @@ export default function Header() {
   const { data: session } = useSession();
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prev) => !prev);
   };
 
   const navItems = [
@@ -56,30 +56,35 @@ export default function Header() {
   }, [navItems]);
 
   return (
-    <header className="top-0 z-50 sticky bg-background/95 backdrop-blur px-4 md:px-20 border-b w-full">
-      <div className="flex justify-between items-center mx-auto h-16 container">
+    <header className="top-0 z-50 sticky bg-background/95 backdrop-blur px-4 sm:px-3 md:px-6 border-b w-full">
+      <div className="flex max-md:justify-between xl:justify-between items-center mx-auto w-full max-w-7xl h-16">
         <Link
           href="/"
-          className="font-bold text-lg md:text-xl whitespace-nowrap"
+          className="max-xl:hidden max-md:block font-bold text-lg md:text-xl whitespace-nowrap"
         >
           Avinash Kumar Verma
         </Link>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Toggle Button */}
         <div className="md:hidden flex items-center gap-4">
           <ModeToggle />
-          <Button variant="light" onPress={toggleMenu} aria-label="Toggle menu">
+          <Button
+            variant="light"
+            onPress={toggleMenu}
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+          >
             {isMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </Button>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex justify-evenly items-center gap-2 lg:gap-6 w-full">
           {navItems.map(({ id, label }) => (
             <Link
               key={id}
               href={`#${id}`}
-              className={`text-sm transition-colors ${
+              className={`text-[12px] md:text-sm transition-colors duration-150 ease-in-out ${
                 activeSection === id
                   ? "text-red-500 font-bold"
                   : "hover:text-accent font-medium"
@@ -99,6 +104,7 @@ export default function Header() {
           )}
 
           <ModeToggle />
+
           {!session ? (
             <Link href="/api/auth/signin">
               <Button variant="bordered" size="sm">
@@ -115,60 +121,64 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden top-16 right-0 left-0 z-40 absolute bg-background shadow-md border-t transition-all duration-200">
-          <nav className="flex flex-col space-y-2 p-4">
-            {navItems.map(({ id, label }) => (
-              <Link
-                key={id}
-                href={`#${id}`}
-                className={`p-2 rounded-md font-medium text-sm ${
-                  activeSection === id
-                    ? "bg-accent/20 text-primary font-bold"
-                    : "hover:bg-accent/10"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
+      {/* Mobile Navigation */}
+      <div
+        className={`md:hidden absolute top-16 left-0 right-0 z-40 bg-background shadow-md border-t transition-all duration-300 transform ${
+          isMenuOpen
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-2 opacity-0 pointer-events-none"
+        }`}
+      >
+        <nav className="flex flex-col space-y-2 p-4">
+          {navItems.map(({ id, label }) => (
+            <Link
+              key={id}
+              href={`#${id}`}
+              className={`p-2 rounded-md font-medium text-sm transition-colors ${
+                activeSection === id
+                  ? "bg-accent/20 text-primary font-bold"
+                  : "hover:bg-accent/10"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {label}
+            </Link>
+          ))}
 
-            {session && (
+          {session && (
+            <Link
+              href="/admin"
+              className="hover:bg-accent/10 p-2 rounded-md font-medium text-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Admin
+            </Link>
+          )}
+
+          <div className="flex justify-between items-center mt-2">
+            <ModeToggle />
+            {!session ? (
               <Link
-                href="/admin"
-                className="hover:bg-accent/10 p-2 rounded-md font-medium text-sm"
+                href="/api/auth/signin"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Admin
+                <Button variant="bordered" size="sm" className="mt-2 w-full">
+                  Sign In
+                </Button>
+              </Link>
+            ) : (
+              <Link
+                href="/api/auth/signout"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Button variant="bordered" size="sm" className="mt-2 w-full">
+                  Sign Out
+                </Button>
               </Link>
             )}
-
-            <div className="flex justify-between items-center mt-2">
-              <ModeToggle />
-              {!session ? (
-                <Link
-                  href="/api/auth/signin"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Button variant="bordered" size="sm" className="mt-2 w-full">
-                    Sign In
-                  </Button>
-                </Link>
-              ) : (
-                <Link
-                  href="/api/auth/signout"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Button variant="bordered" size="sm" className="mt-2 w-full">
-                    Sign Out
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </nav>
-        </div>
-      )}
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }
