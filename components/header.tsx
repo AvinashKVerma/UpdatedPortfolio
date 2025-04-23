@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Menu, X } from "lucide-react";
+import { FiMenu, FiX } from "react-icons/fi"; // ✅ React Icons
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@heroui/react";
 
@@ -37,7 +37,6 @@ export default function Header() {
         ([entry]) => {
           if (entry.isIntersecting) {
             setActiveSection(id);
-
             const newUrl = `#${id}`;
             if (window.location.hash !== newUrl) {
               history.replaceState(null, "", newUrl);
@@ -70,7 +69,7 @@ export default function Header() {
         <div className="md:hidden flex items-center gap-4">
           <ModeToggle />
           <Button variant="light" onPress={toggleMenu} aria-label="Toggle menu">
-            {isMenuOpen ? <X /> : <Menu />}
+            {isMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </Button>
         </div>
 

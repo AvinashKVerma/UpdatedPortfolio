@@ -23,7 +23,7 @@ export default function HeroSection() {
               Avinash K R Verma
             </h1>
             <h2 className="font-medium text-accent text-xl sm:text-2xl md:text-3xl">
-              Frontend Developer (React & Next.js)
+              Web Developer (React & Next.js)
             </h2>
             <p className="mx-auto md:mx-0 max-w-xl text-muted-foreground text-base sm:text-lg">
               Building performant, scalable, and user-centric web applications
