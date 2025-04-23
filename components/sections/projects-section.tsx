@@ -1,19 +1,13 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ExternalLink, Github } from "lucide-react";
+import { FiGithub } from "react-icons/fi";
+import { BsBoxArrowUpRight } from "react-icons/bs";
 import Link from "next/link";
 import Image from "next/image";
+import { Button, Card, CardHeader, CardBody, CardFooter } from "@heroui/react";
+import { Badge } from "@/components/ui/badge";
 
 const projects = [
   {
@@ -72,30 +66,32 @@ const projects = [
 ];
 
 export default function ProjectsSection() {
-  return (
-    <section id="projects" className="bg-muted/50 py-16 md:py-24">
-      <div className="px-4 md:px-6 container">
-        <motion.h2
-          className="section-title"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Projects
-        </motion.h2>
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef(null);
 
-        <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * (index % 3) }}
-            >
-              <Card className="flex flex-col h-full overflow-hidden">
-                <div className="relative h-48">
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section id="projects" ref={sectionRef} className="px-4 sm:px-8 py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+        className="mx-auto max-w-6xl"
+      >
+        <h2 className="mb-12 font-bold text-3xl text-center">Projects</h2>
+        <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
+          {projects.map((project) => (
+            <Card key={project.id} className="shadow-md rounded-2xl">
+              <CardHeader>
+                <div className="relative h-auto">
                   <Image
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
@@ -103,46 +99,55 @@ export default function ProjectsSection() {
                     className="object-cover"
                   />
                 </div>
-                <CardHeader>
-                  <CardTitle>{project.title}</CardTitle>
-                  <CardDescription>{project.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
+                <div className="flex flex-col items-center gap-2">
+                  <div className="font-semibold text-2xl leading-none tracking-tight">
+                    {project.title}
                   </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="outline" size="sm" asChild>
-                    <Link
-                      href={project.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="mr-2 w-4 h-4" />
-                      Code
-                    </Link>
-                  </Button>
-                  <Button size="sm" asChild>
-                    <Link
-                      href={project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink className="mr-2 w-4 h-4" />
-                      Demo
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
+                  <div className="text-muted-foreground text-sm">
+                    {project.description}
+                  </div>
+                </div>
+              </CardHeader>
+              <CardBody>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {project.tags.map((tag) => (
+                    <Badge key={tag} className="bg-gray-100 text-gray-800">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </CardBody>
+              <CardFooter className="flex justify-end gap-4">
+                <Button
+                  variant="bordered"
+                  size="sm"
+                  startContent={<FiGithub className="mr-2 w-4 h-4" />}
+                >
+                  <Link
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Code
+                  </Link>
+                </Button>
+                <Button
+                  size="sm"
+                  startContent={<BsBoxArrowUpRight className="mr-2 w-4 h-4" />}
+                >
+                  <Link
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Demo
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

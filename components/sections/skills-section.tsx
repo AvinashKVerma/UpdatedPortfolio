@@ -136,7 +136,7 @@ export default function SkillsSection() {
             >
               <Badge
                 variant="default"
-                className="bg-primary px-4 py-2 font-medium text-white text-sm md:text-base"
+                className="bg-primary px-4 py-2 font-medium text-white dark:text-black text-sm md:text-base"
               >
                 {skill}
               </Badge>

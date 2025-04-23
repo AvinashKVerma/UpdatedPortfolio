@@ -4,7 +4,6 @@ import SkillsSection from "@/components/sections/skills-section";
 import ProjectsSection from "@/components/sections/projects-section";
 import ExperienceSection from "@/components/sections/experience-section";
 import EducationSection from "@/components/sections/education-section";
-import ContactSection from "@/components/sections/contact-section";
 import { GitHubContributionCalendar } from "@/components/github-contribution-calendar";
 import Contact from "@/components/sections/contact-section";
 

@@ -1,23 +1,20 @@
 "use client";
 
-import type React from "react";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { MapPin, Mail, Phone } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+  CardBody,
+  CardFooter,
+  Input,
+  Textarea,
+  Button,
+  addToast,
+} from "@heroui/react";
+import { MdLocationOn, MdEmail, MdPhone } from "react-icons/md";
 
 export default function Contact() {
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -39,9 +36,8 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     setTimeout(() => {
-      toast({
+      addToast({
         title: "Message sent!",
         description: "Thank you for your message. I'll get back to you soon.",
       });
@@ -56,19 +52,12 @@ export default function Contact() {
         const entry = entries[0];
         setIsInView(entry.isIntersecting);
       },
-      {
-        threshold: 0.1, // Trigger when 10% of the section is in view
-      }
+      { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
     };
   }, []);
 
@@ -90,92 +79,86 @@ export default function Contact() {
           transition={{ duration: 0.5 }}
           className="gap-8 grid grid-cols-1 md:grid-cols-2 mx-auto max-w-4xl"
         >
-          <Card>
-            <CardHeader>
-              <CardTitle>Send a Message</CardTitle>
-              <CardDescription>
+          {/* Message Form */}
+          <Card className="w-full">
+            <CardHeader className="flex-col items-start gap-1">
+              <h4 className="font-semibold text-default-600 text-lg">
+                Send a Message
+              </h4>
+              <p className="text-default-400 text-sm">
                 Fill out the form below to get in touch with me.
-              </CardDescription>
+              </p>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Input
-                    placeholder="Your Name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="email"
-                    placeholder="Your Email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <Textarea
-                    placeholder="Your Message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={5}
-                    required
-                    className="w-full"
-                  />
-                </div>
+            <CardBody className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4 w-full">
+                <Input
+                  placeholder="Your Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <Input
+                  type="email"
+                  placeholder="Your Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <Textarea
+                  placeholder="Your Message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={5}
+                  required
+                />
                 <Button
                   type="submit"
+                  color="primary"
                   className="w-full"
-                  disabled={isSubmitting}
+                  isDisabled={isSubmitting}
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
-            </CardContent>
+            </CardBody>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
-              <CardDescription>
+          {/* Contact Details */}
+          <Card className="w-full">
+            <CardHeader className="flex-col items-start gap-1">
+              <h4 className="font-semibold text-default-600 text-lg">
+                Contact Information
+              </h4>
+              <p className="text-default-400 text-sm">
                 Here's how you can reach me directly.
-              </CardDescription>
+              </p>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <MapPin className="mt-0.5 w-5 h-5 text-muted-foreground" />
+            <CardBody className="space-y-6">
+              <div className="flex items-start gap-4">
+                <MdLocationOn className="text-default-400 text-2xl" />
                 <div>
-                  <h3 className="font-medium">Location</h3>
-                  <p className="text-muted-foreground">Ranchi, Jharkhand</p>
+                  <p className="font-semibold text-default-600">Location</p>
+                  <p className="text-default-400">Ranchi, Jharkhand</p>
                 </div>
               </div>
-
-              <div className="flex items-start space-x-3">
-                <Mail className="mt-0.5 w-5 h-5 text-muted-foreground" />
+              <div className="flex items-start gap-4">
+                <MdEmail className="text-default-400 text-2xl" />
                 <div>
-                  <h3 className="font-medium">Email</h3>
-                  <p className="text-muted-foreground">
-                    avinashverma078@gmail.com
-                  </p>
+                  <p className="font-semibold text-default-600">Email</p>
+                  <p className="text-default-400">avinashverma078@gmail.com</p>
                 </div>
               </div>
-
-              <div className="flex items-start space-x-3">
-                <Phone className="mt-0.5 w-5 h-5 text-muted-foreground" />
+              <div className="flex items-start gap-4">
+                <MdPhone className="text-default-400 text-2xl" />
                 <div>
-                  <h3 className="font-medium">Phone</h3>
-                  <p className="text-muted-foreground">+91 82104 88328</p>
+                  <p className="font-semibold text-default-600">Phone</p>
+                  <p className="text-default-400">+91 82104 88328</p>
                 </div>
               </div>
-            </CardContent>
+            </CardBody>
           </Card>
         </motion.div>
       </div>

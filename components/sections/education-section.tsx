@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+  CardBody,
+  CardFooter,
+  Avatar,
+  Button,
+} from "@heroui/react";
 
 export default function Education() {
   const [isInView, setIsInView] = useState(false);
@@ -36,9 +36,7 @@ export default function Education() {
         const entry = entries[0];
         setIsInView(entry.isIntersecting);
       },
-      {
-        threshold: 0.1, // Trigger when 10% of the section is in view
-      }
+      { threshold: 0.1 }
     );
 
     if (sectionRef.current) {
@@ -51,6 +49,25 @@ export default function Education() {
       }
     };
   }, []);
+
+  const educations = [
+    {
+      title: "B.Tech",
+      duration: "2018 - 2022",
+      institute: "C.V. Raman College of Engineering",
+      description:
+        "Completed Bachelor of Technology with a focus on Computer Science and Engineering.",
+      avatar: "/profile1.png",
+    },
+    {
+      title: "Intermediate",
+      duration: "2016 - 2018",
+      institute: "DAV Public School",
+      description:
+        "Completed intermediate education with focus on Science and Mathematics.",
+      avatar: "/profile2.png",
+    },
+  ];
 
   return (
     <section id="education" className="bg-background py-20" ref={sectionRef}>
@@ -68,43 +85,37 @@ export default function Education() {
           animate={isInView ? "visible" : "hidden"}
           className="space-y-6 mx-auto max-w-3xl"
         >
-          <motion.div variants={itemVariants}>
-            <Card>
-              <CardHeader>
-                <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-2">
-                  <CardTitle>B.Tech</CardTitle>
-                  <Badge variant="outline">2018 - 2022</Badge>
-                </div>
-                <CardDescription>
-                  C.V. Raman College of Engineering
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Completed Bachelor of Technology with focus on Computer
-                  Science and Engineering.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <Card>
-              <CardHeader>
-                <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-2">
-                  <CardTitle>Intermediate</CardTitle>
-                  <Badge variant="outline">2016 - 2018</Badge>
-                </div>
-                <CardDescription>DAV Public School</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Completed intermediate education with focus on Science and
-                  Mathematics.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
+          {educations.map((edu, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <Card className="max-w-full">
+                <CardHeader className="justify-between">
+                  <div className="flex gap-5">
+                    <Avatar
+                      isBordered
+                      radius="full"
+                      size="md"
+                      src={edu.avatar}
+                    />
+                    <div className="flex flex-col justify-center items-start gap-1">
+                      <h4 className="font-semibold text-default-600 text-small">
+                        {edu.title}
+                      </h4>
+                      <h5 className="text-default-400 text-small tracking-tight">
+                        {edu.institute}
+                      </h5>
+                    </div>
+                  </div>
+                  <div className="font-medium text-default-500 text-xs">
+                    {edu.duration}
+                  </div>
+                </CardHeader>
+                <CardBody className="px-3 py-0 text-default-500 text-small">
+                  <p>{edu.description}</p>
+                </CardBody>
+                <CardFooter />
+              </Card>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

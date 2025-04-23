@@ -136,7 +136,7 @@ export function CalendarHeatmap({
 
       {/* Month Labels */}
       <div className="overflow-x-scroll">
-        <div className="p-4 w-fit">
+        <div className="p-4 lg:w-full max-lg:w-fit">
           <div className="relative flex justify-between px-10 w-auto">
             {monthLabels.map(({ month }) => (
               <div

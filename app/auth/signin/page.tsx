@@ -1,99 +1,110 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Mail, Loader2 } from "lucide-react"
+import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Tabs,
+  Tab,
+  Button,
+  Input,
+  Spinner,
+} from "@heroui/react";
+import { CiMail } from "react-icons/ci";
 
 export default function SignIn() {
-  const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState("email")
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("email");
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
+    e.preventDefault();
+    setIsLoading(true);
     try {
-      await signIn("email", { email, redirect: false })
-      router.push("/auth/verify-request")
+      await signIn("email", { email, redirect: false });
+      router.push("/auth/verify-request");
     } catch (error) {
-      console.error("Sign in error:", error)
+      console.error("Sign in error:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignIn = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await signIn("google", { callbackUrl: "/admin" })
+      await signIn("google", { callbackUrl: "/admin" });
     } catch (error) {
-      console.error("Google sign in error:", error)
-      setIsLoading(false)
+      console.error("Google sign in error:", error);
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="container flex items-center justify-center min-h-screen py-12">
+    <div className="flex justify-center items-center py-12 min-h-screen container">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Sign in</CardTitle>
-          <CardDescription>Sign in to access the admin dashboard</CardDescription>
+        <CardHeader className="flex flex-col items-center gap-1">
+          <h3 className="font-bold text-2xl text-center">Sign in</h3>
+          <p className="text-default-500 text-sm">
+            Sign in to access the admin dashboard
+          </p>
         </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="email" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="email">Email</TabsTrigger>
-              <TabsTrigger value="google">Google</TabsTrigger>
-            </TabsList>
-            <TabsContent value="email">
+        <CardBody>
+          <Tabs
+            aria-label="Sign in options"
+            selectedKey={selectedTab}
+            onSelectionChange={(key) => setSelectedTab(String(key))}
+            classNames={{ base: "w-full", tabList: "w-full" }}
+          >
+            <Tab key="email" title="Email">
               <form onSubmit={handleEmailSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Input
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  label="Email"
+                  labelPlacement="outside"
+                  placeholder="name@example.com"
+                  variant="bordered"
+                  type="email"
+                  required
+                />
+                <Button type="submit" fullWidth isDisabled={isLoading}>
                   {isLoading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Spinner />
                       Signing in...
                     </>
                   ) : (
                     <>
-                      <Mail className="mr-2 h-4 w-4" />
+                      <CiMail />
                       Sign in with Email
                     </>
                   )}
                 </Button>
               </form>
-            </TabsContent>
-            <TabsContent value="google">
+            </Tab>
+            <Tab key="google" title="Google">
               <div className="space-y-4">
-                <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isLoading}>
+                <Button
+                  fullWidth
+                  variant="bordered"
+                  onPress={handleGoogleSignIn}
+                  isDisabled={isLoading}
+                >
                   {isLoading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Spinner />
                       Signing in...
                     </>
                   ) : (
                     <>
-                      <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                      <svg className="mr-2 w-4 h-4" viewBox="0 0 24 24">
                         <path
                           d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                           fill="#4285F4"
@@ -116,15 +127,15 @@ export default function SignIn() {
                   )}
                 </Button>
               </div>
-            </TabsContent>
+            </Tab>
           </Tabs>
-        </CardContent>
+        </CardBody>
         <CardFooter className="flex justify-center">
-          <Button variant="link" onClick={() => router.push("/")}>
+          <Button variant="ghost" onPress={() => router.push("/")}>
             Back to home
           </Button>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

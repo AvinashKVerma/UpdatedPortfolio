@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Button } from "@heroui/react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +33,6 @@ export default function Header() {
       const element = document.getElementById(id);
       if (!element) return;
 
-      console.log(element);
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -70,40 +69,26 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-4">
           <ModeToggle />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
+          <Button variant="light" onPress={toggleMenu} aria-label="Toggle menu">
+            {isMenuOpen ? <X /> : <Menu />}
           </Button>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          {navItems.map(
-            ({ id, label }) => (
-              console.log(activeSection, id, activeSection === id),
-              (
-                <Link
-                  key={id}
-                  href={`#${id}`}
-                  className={`text-sm transition-colors ${
-                    activeSection === id
-                      ? "text-red-500 font-bold"
-                      : "hover:text-accent font-medium"
-                  }`}
-                >
-                  {label}
-                </Link>
-              )
-            )
-          )}
+          {navItems.map(({ id, label }) => (
+            <Link
+              key={id}
+              href={`#${id}`}
+              className={`text-sm transition-colors ${
+                activeSection === id
+                  ? "text-red-500 font-bold"
+                  : "hover:text-accent font-medium"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
 
           {session && (
             <Link
@@ -117,13 +102,13 @@ export default function Header() {
           <ModeToggle />
           {!session ? (
             <Link href="/api/auth/signin">
-              <Button variant="outline" size="sm">
+              <Button variant="bordered" size="sm">
                 Sign In
               </Button>
             </Link>
           ) : (
             <Link href="/api/auth/signout">
-              <Button variant="outline" size="sm">
+              <Button variant="bordered" size="sm">
                 Sign Out
               </Button>
             </Link>
@@ -167,7 +152,7 @@ export default function Header() {
                   href="/api/auth/signin"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Button variant="outline" size="sm" className="mt-2 w-full">
+                  <Button variant="bordered" size="sm" className="mt-2 w-full">
                     Sign In
                   </Button>
                 </Link>
@@ -176,7 +161,7 @@ export default function Header() {
                   href="/api/auth/signout"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Button variant="outline" size="sm" className="mt-2 w-full">
+                  <Button variant="bordered" size="sm" className="mt-2 w-full">
                     Sign Out
                   </Button>
                 </Link>

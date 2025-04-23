@@ -2,14 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardHeader, CardBody, CardFooter, Badge } from "@heroui/react";
 
 const experiences = [
   {
@@ -39,7 +32,7 @@ export default function Experience() {
         setIsInView(entry.isIntersecting);
       },
       {
-        threshold: 0.1, // Trigger when 10% of the section is in view
+        threshold: 0.1,
       }
     );
 
@@ -76,34 +69,44 @@ export default function Experience() {
               className="relative pl-8 border-muted-foreground/20 border-l"
             >
               <div className="top-6 -left-[9px] absolute bg-primary border-4 border-background rounded-full w-4 h-4"></div>
+
               <Card className="mb-10">
-                <CardHeader>
-                  <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-2">
-                    <CardTitle>{experience.role}</CardTitle>
-                    <Badge variant="outline">{experience.period}</Badge>
+                <CardHeader className="flex md:flex-row flex-col justify-between items-start md:items-center gap-2">
+                  <div>
+                    <h4 className="font-semibold text-large">
+                      {experience.role}
+                    </h4>
+                    <p className="text-default-500 text-small">
+                      {experience.company}
+                    </p>
                   </div>
-                  <CardDescription>{experience.company}</CardDescription>
+                  <Badge>{experience.period}</Badge>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    {experience.description}
-                  </p>
-                  <ul className="space-y-2 mt-4 pl-5 text-muted-foreground list-disc">
-                    {experience.achievements.map((achievement, index) => (
-                      <li key={index}>{achievement}</li>
-                    ))}
-                  </ul>
-                  <div className="mt-4">
-                    <strong>Technologies:</strong>
-                    <ul className="space-x-2 mt-2">
-                      {experience.technologies.map((tech, index) => (
-                        <li key={index} className="inline-block">
-                          <Badge variant="outline">{tech}</Badge>
-                        </li>
+
+                <CardBody className="space-y-4 text-default-500 text-sm">
+                  <p>{experience.description}</p>
+
+                  <div>
+                    <ul className="space-y-1 list-disc list-inside">
+                      {experience.achievements.map((achievement, index) => (
+                        <li key={index}>{achievement}</li>
                       ))}
                     </ul>
                   </div>
-                </CardContent>
+
+                  <div>
+                    <strong className="text-default-600">Technologies: </strong>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {experience.technologies.map((tech, index) => (
+                        <Badge key={index} variant="solid">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </CardBody>
+
+                <CardFooter />
               </Card>
             </div>
           ))}
