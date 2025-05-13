@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { NextAuthProvider } from "@/components/auth-provider";
+import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className={`${inter.className}`}>
         <NextAuthProvider>
           <ThemeProvider
@@ -42,6 +44,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-import "./globals.css";
-import { Providers } from "./providers";

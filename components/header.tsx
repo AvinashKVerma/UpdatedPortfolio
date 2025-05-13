@@ -57,15 +57,16 @@ export default function Header() {
 
   return (
     <header className="top-0 z-50 sticky bg-background/95 backdrop-blur px-4 sm:px-3 md:px-6 border-b w-full">
-      <div className="flex max-md:justify-between xl:justify-between items-center mx-auto w-full max-w-7xl h-16">
+      <div className="flex justify-between xl:justify-between items-center mx-auto w-full max-w-7xl h-16">
+        {/* Logo visible below md and above xl */}
         <Link
           href="/"
-          className="max-xl:hidden max-md:block font-bold text-lg md:text-xl whitespace-nowrap"
+          className="md:hidden block xl:block font-bold text-lg md:text-xl whitespace-nowrap"
         >
           Avinash Kumar Verma
         </Link>
 
-        {/* Mobile Toggle Button */}
+        {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-4">
           <ModeToggle />
           <Button
