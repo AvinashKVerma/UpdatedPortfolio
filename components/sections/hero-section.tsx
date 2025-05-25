@@ -6,6 +6,7 @@ import { Avatar, Button } from "@heroui/react";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
 import { CiMail } from "react-icons/ci";
+import { BsDownload } from "react-icons/bs";
 
 export default function HeroSection() {
   return (
@@ -34,6 +35,18 @@ export default function HeroSection() {
               </Button>
               <Button variant="bordered">
                 <Link href="#projects">View projects</Link>
+              </Button>
+              <Button variant="bordered">
+                <a
+                  href="/AvinashVerma.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download="AvinashVerma_Resume.pdf"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                >
+                  <BsDownload className="w-4 h-4" />
+                  Resume
+                </a>
               </Button>
             </div>
             <div className="flex justify-center md:justify-start gap-4 pt-4">
