@@ -38,7 +38,7 @@ export default function AboutSection() {
                     Avinash K R Verma
                   </h4>
                   <h5 className="text-default-400 text-sm">
-                    Frontend Developer at Uinfo Technology
+                    Software Engineer at Uinfo Technology
                   </h5>
                 </div>
               </CardHeader>

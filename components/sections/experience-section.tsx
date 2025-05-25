@@ -11,7 +11,7 @@ const experiences = [
     role: "Software Engineer",
     period: "August 2022 – Present",
     description:
-      "Leading the frontend development team in building websites and applications using React and Next.js.",
+      "Leading the frontSend development team in building websites and applications using React and Next.js.",
     achievements: [
       "Implemented a component library that reduced development time by 40%",
       "Optimized application performance, improving load times by 60%",

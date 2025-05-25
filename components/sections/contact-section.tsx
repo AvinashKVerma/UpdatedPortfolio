@@ -36,14 +36,21 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setTimeout(() => {
+    const response = await fetch(`/api/contact`, {
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
+
+    // const responseData = await response.json();
+    if (response.ok) {
       addToast({
         title: "Message sent!",
         description: "Thank you for your message. I'll get back to you soon.",
+        color: "success",
       });
       setFormData({ name: "", email: "", message: "" });
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   useEffect(() => {
@@ -94,6 +101,7 @@ export default function Contact() {
                 <Input
                   placeholder="Your Name"
                   name="name"
+                  variant="bordered"
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -102,6 +110,7 @@ export default function Contact() {
                   type="email"
                   placeholder="Your Email"
                   name="email"
+                  variant="bordered"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -109,6 +118,7 @@ export default function Contact() {
                 <Textarea
                   placeholder="Your Message"
                   name="message"
+                  variant="bordered"
                   value={formData.message}
                   onChange={handleChange}
                   rows={5}
