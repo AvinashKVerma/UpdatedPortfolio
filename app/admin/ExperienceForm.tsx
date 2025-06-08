@@ -30,9 +30,27 @@ export default function ExperienceForm() {
     }));
   };
 
-  const handleSave = () => {
-    console.log("Saved Experience:", experienceData);
-    // Add toast or save logic here
+  const handleSave = async () => {
+    try {
+      const res = await fetch("/api/experience", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(experienceData),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        console.log("Experience saved successfully:", result.data);
+        // Add toast or reset form here
+      } else {
+        console.error("Save failed:", result.error);
+      }
+    } catch (err) {
+      console.error("Error saving experience:", err);
+    }
   };
 
   return (

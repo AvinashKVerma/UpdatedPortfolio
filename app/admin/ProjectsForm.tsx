@@ -5,6 +5,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Divider,
   Input,
   Textarea,
 } from "@heroui/react";
@@ -30,16 +31,33 @@ const ProjectsForm: React.FC = () => {
     }));
   };
 
-  const handleSave = () => {
-    addToast({
-      title: "Changes saved",
-      description: "Your changes have been saved successfully.",
-    });
-    console.log("Saved Data:", formData); // You can replace this with actual API call
+  const handleSave = async () => {
+    try {
+      const res = await fetch("/api/projects", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const json = await res.json();
+      if (json.success) {
+        addToast({
+          title: "Project saved",
+          description: "Your project was successfully added.",
+        });
+      } else {
+        console.error(json.error);
+      }
+    } catch (err) {
+      console.error("Failed to save project", err);
+    }
   };
+
   return (
     <Card>
-      <CardHeader className="flex flex-col items-start gap-1">
+      <CardHeader className="flex flex-col items-center gap-1">
         <div className="font-semibold text-2xl leading-none tracking-tight">
           Projects
         </div>
@@ -47,6 +65,7 @@ const ProjectsForm: React.FC = () => {
           Add, edit, or remove projects from your portfolio
         </div>
       </CardHeader>
+      <Divider />
 
       <CardBody>
         <div className="flex flex-col gap-2">
@@ -112,8 +131,14 @@ const ProjectsForm: React.FC = () => {
       </CardBody>
 
       <CardFooter className="flex justify-end gap-2">
-        <Button variant="bordered">Cancel</Button>
-        <Button onPress={handleSave}>Save Project</Button>
+        <Button
+          className="rounded-full h-7"
+          color="success"
+          variant="bordered"
+          onPress={handleSave}
+        >
+          Save Project
+        </Button>
       </CardFooter>
     </Card>
   );

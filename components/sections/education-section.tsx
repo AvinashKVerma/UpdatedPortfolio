@@ -53,7 +53,7 @@ export default function Education() {
   const educations = [
     {
       title: "B.Tech",
-      duration: "2018 - 2022",
+      duration: "2015 - 2019",
       institute: "C.V. Raman College of Engineering",
       description:
         "Completed Bachelor of Technology with a focus on Computer Science and Engineering.",
@@ -61,7 +61,7 @@ export default function Education() {
     },
     {
       title: "Intermediate",
-      duration: "2016 - 2018",
+      duration: "2013 - 2015",
       institute: "DAV Public School",
       description:
         "Completed intermediate education with focus on Science and Mathematics.",

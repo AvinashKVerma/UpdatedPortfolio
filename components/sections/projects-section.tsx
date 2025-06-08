@@ -65,8 +65,20 @@ const projects = [
   },
 ];
 
+interface Project {
+  _id: string;
+  id: string;
+  projectImage: string;
+  projectTitle: string;
+  projectDescription: string;
+  projectTags: string[];
+  projectRepo: string;
+  projectDemo: string;
+}
+
 export default function ProjectsSection() {
   const [isInView, setIsInView] = useState(false);
+  const [projects, setProjetcs] = useState<Project[]>([]);
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -75,6 +87,11 @@ export default function ProjectsSection() {
       { threshold: 0.3 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
+    (async function () {
+      const response = await fetch(`/api/projects`);
+      const responseData = await response.json();
+      if (Array.isArray(responseData.data)) setProjetcs(responseData.data);
+    })();
     return () => observer.disconnect();
   }, []);
 
@@ -88,64 +105,76 @@ export default function ProjectsSection() {
       >
         <h2 className="mb-12 font-bold text-3xl text-center">Projects</h2>
         <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
-          {projects.map((project) => (
-            <Card key={project.id} className="shadow-md rounded-2xl">
-              <CardHeader>
-                <div className="relative h-auto">
-                  <Image
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <div className="font-semibold text-2xl leading-none tracking-tight">
-                    {project.title}
-                  </div>
-                  <div className="text-muted-foreground text-sm">
-                    {project.description}
-                  </div>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {project.tags.map((tag) => (
-                    <Badge key={tag} className="bg-gray-100 text-gray-800">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardBody>
-              <CardFooter className="flex justify-end gap-4">
-                <Button
-                  variant="bordered"
-                  size="sm"
-                  startContent={<FiGithub className="mr-2 w-4 h-4" />}
-                >
-                  <Link
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Code
-                  </Link>
-                </Button>
-                <Button
-                  size="sm"
-                  startContent={<BsBoxArrowUpRight className="mr-2 w-4 h-4" />}
-                >
-                  <Link
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Demo
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+          {projects.length &&
+            projects.map(
+              (project) => (
+                console.log(project),
+                (
+                  <Card key={project._id} className="shadow-md rounded-2xl">
+                    <CardHeader>
+                      <div className="relative h-auto">
+                        <Image
+                          src={project.projectImage || "/placeholder.svg"}
+                          alt={project.projectTitle || "Project Image"}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="font-semibold text-2xl leading-none tracking-tight">
+                          {project.projectTitle}
+                        </div>
+                        <div className="text-muted-foreground text-sm">
+                          {project.projectDescription}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <div className="flex flex-wrap gap-2 mt-4">
+                        {Array.isArray(project.projectTags) &&
+                          project.projectTags.map((tag) => (
+                            <Badge
+                              key={tag}
+                              className="bg-gray-100 text-gray-800"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                      </div>
+                    </CardBody>
+                    <CardFooter className="flex justify-end gap-4">
+                      <Button
+                        variant="bordered"
+                        size="sm"
+                        startContent={<FiGithub className="mr-2 w-4 h-4" />}
+                      >
+                        <Link
+                          href={project.projectRepo || "/"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Code
+                        </Link>
+                      </Button>
+                      <Button
+                        size="sm"
+                        startContent={
+                          <BsBoxArrowUpRight className="mr-2 w-4 h-4" />
+                        }
+                      >
+                        <Link
+                          href={project.projectDemo || "/"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Demo
+                        </Link>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                )
+              )
+            )}
         </div>
       </motion.div>
     </section>

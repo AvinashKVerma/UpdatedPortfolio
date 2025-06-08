@@ -3,11 +3,11 @@
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import { Tabs, Tab, Card, CardBody } from "@heroui/react";
-import SkillsForm from "./SkillsForm";
+import { Tabs, Tab } from "@heroui/react";
 import ProjectsForm from "./ProjectsForm";
 import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
+import SkillsForm from "./SkillsForm";
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -42,7 +42,6 @@ export default function AdminPage() {
           </p>
         </div>
       </div>
-
       <Tabs
         aria-label="Admin Tabs"
         selectedKey={activeTab}

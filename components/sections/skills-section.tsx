@@ -1,33 +1,43 @@
 "use client";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-
-const techSkills = [
-  "React",
-  "Next.js",
-  "Tailwind CSS",
-  "Material UI",
-  "Next UI",
-  "Redux",
-  "Context API",
-  "NextAuth",
-  "Google Auth",
-  "Node.js",
-  "Serverless Deployment",
-  "AWS (Amplify, EC2)",
-  "CI/CD",
-  "Figma",
-  "Git",
-  "GitHub",
-  "HTML",
-  "CSS",
-  "JavaScript",
-  "UI/UX",
-];
-
-const aiSkills = ["ChatGPT", "V0.dev", "DeepSeek", "openui.fly.dev"];
+import { useEffect, useState } from "react";
 
 export default function SkillsSection() {
+  const [techSkills, setTechSkills] = useState<string[]>([]);
+  const [aiSkills, setAiSkills] = useState<string[]>([]);
+  // Categories loaded from API
+  const [skillCategories, setSkillCategories] = useState<
+    { title: string; description: string }[]
+  >([]);
+
+  useEffect(() => {
+    async function fetchSkillsAndCategories() {
+      try {
+        // Fetch tech and AI skills
+        const skillsRes = await fetch("/api/skills");
+        const skillsData: { name: string; type: "tech" | "ai" }[] =
+          await skillsRes.json();
+
+        setTechSkills(
+          skillsData.filter((s) => s.type === "tech").map((s) => s.name)
+        );
+        setAiSkills(
+          skillsData.filter((s) => s.type === "ai").map((s) => s.name)
+        );
+
+        // Fetch categories
+        const categoriesRes = await fetch("/api/categories");
+        const categoriesData: { title: string; description: string }[] =
+          await categoriesRes.json();
+        setSkillCategories(categoriesData);
+      } catch (error) {
+        console.error("Failed to load skills or categories", error);
+      }
+    }
+    fetchSkillsAndCategories();
+  }, []);
+
   return (
     <section id="skills" className="py-16 md:py-24">
       <div className="px-4 md:px-6 container">
@@ -70,42 +80,22 @@ export default function SkillsSection() {
 
         {/* Skill Category Cards */}
         <div className="gap-6 grid md:grid-cols-2 lg:grid-cols-4 mt-12">
-          {[
-            {
-              title: "Frontend Development",
-              description:
-                "Responsive and user-focused UIs using React, Next.js, Tailwind CSS, and design systems.",
-            },
-            {
-              title: "State & Authentication",
-              description:
-                "State management and secure access control with Redux, Context API, NextAuth, and Google Auth.",
-            },
-            {
-              title: "DevOps & Deployment",
-              description:
-                "CI/CD, GitHub, AWS Amplify & EC2, and serverless deployment for scalable systems.",
-            },
-            {
-              title: "Design & Collaboration",
-              description:
-                "Design tools like Figma and UI/UX expertise to build beautiful and intuitive interfaces.",
-            },
-          ].map((block, i) => (
-            <motion.div
-              key={block.title}
-              className="bg-card shadow-sm p-6 rounded-lg"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-            >
-              <h3 className="mb-3 font-semibold text-lg">{block.title}</h3>
-              <p className="text-muted-foreground text-sm">
-                {block.description}
-              </p>
-            </motion.div>
-          ))}
+          {Array.isArray(skillCategories) &&
+            skillCategories.map((block, i) => (
+              <motion.div
+                key={block.title}
+                className="bg-card shadow-sm p-6 rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+              >
+                <h3 className="mb-3 font-semibold text-lg">{block.title}</h3>
+                <p className="text-muted-foreground text-sm">
+                  {block.description}
+                </p>
+              </motion.div>
+            ))}
         </div>
 
         {/* AI Tools Section */}

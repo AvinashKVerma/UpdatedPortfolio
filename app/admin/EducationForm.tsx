@@ -26,9 +26,27 @@ export default function EducationForm() {
     setEducation((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    console.log("Saved Education:", education);
-    // Add your save logic or API call here
+  const handleSave = async () => {
+    try {
+      const res = await fetch("/api/education", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(education),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        console.log("Education saved:", result.data);
+        // Optional: reset form or show toast
+      } else {
+        console.error("Failed:", result.error);
+      }
+    } catch (err) {
+      console.error("Error saving education:", err);
+    }
   };
 
   return (
